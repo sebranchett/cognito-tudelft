@@ -31,13 +31,33 @@ class CognitoTudelftStack(Stack):
             value=cognito_user_pool.user_pool_id
         )
 
+        tudelft_identity_provider = cognito.UserPoolIdentityProviderSaml(
+            self, "TUDelftIdentityProvider",
+            metadata=cognito.UserPoolIdentityProviderSamlMetadata.url(
+                "https://login.tudelft.nl/sso/saml2/idp/metadata.php"
+            ),
+            user_pool=cognito_user_pool,
+            attribute_mapping=cognito.AttributeMapping(
+                email=cognito.ProviderAttribute.other("mail"),
+                preferred_username=cognito.ProviderAttribute.other(
+                    "eduPersonPrincipalName"
+                ),
+            ),
+            idp_signout=False,
+            name="TU-Delft"
+        )
+
         cognito_app_client = cognito.UserPoolClient(
             self,
             f'{base_name}UserPoolClient',
             user_pool=cognito_user_pool,
             generate_secret=True,
             supported_identity_providers=[
-                cognito.UserPoolClientIdentityProvider.COGNITO],
+                cognito.UserPoolClientIdentityProvider.COGNITO,
+                cognito.UserPoolClientIdentityProvider.custom(
+                    tudelft_identity_provider.provider_name
+                )
+            ],
             prevent_user_existence_errors=True,
             o_auth=cognito.OAuthSettings(
                 callback_urls=[
@@ -83,21 +103,4 @@ class CognitoTudelftStack(Stack):
                 domain_prefix=domain_prefix
             ),
             user_pool=cognito_user_pool
-        )
-
-        # tudelft_identity_provider = \
-        cognito.UserPoolIdentityProviderSaml(
-            self, "TUDelftIdentityProvider",
-            metadata=cognito.UserPoolIdentityProviderSamlMetadata.url(
-                "https://login.tudelft.nl/sso/saml2/idp/metadata.php"
-            ),
-            user_pool=cognito_user_pool,
-            attribute_mapping=cognito.AttributeMapping(
-                email=cognito.ProviderAttribute.other("mail"),
-                preferred_username=cognito.ProviderAttribute.other(
-                    "eduPersonPrincipalName"
-                ),
-            ),
-            idp_signout=False,
-            name="TU-Delft-IdP"
         )
