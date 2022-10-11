@@ -1,19 +1,20 @@
 from aws_cdk import (
-    # Duration,
-    Stack,
-    # aws_sqs as sqs,
+    Stack, RemovalPolicy,
+    aws_cognito as cognito,
 )
 from constructs import Construct
+
 
 class CognitoTudelftStack(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        # The code that defines your stack goes here
-
-        # example resource
-        # queue = sqs.Queue(
-        #     self, "CognitoTudelftQueue",
-        #     visibility_timeout=Duration.seconds(300),
-        # )
+        # User pool and user pool OAuth client
+        base_name = "CogTUD"
+        cognito.UserPool(
+            self,
+            f'{base_name}UserPool',
+            removal_policy=RemovalPolicy.DESTROY,
+            self_sign_up_enabled=False
+        )
