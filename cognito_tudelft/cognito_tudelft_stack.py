@@ -1,5 +1,5 @@
 from aws_cdk import (
-    Stack, RemovalPolicy,
+    Stack, RemovalPolicy, CfnOutput,
     aws_cognito as cognito,
 )
 from constructs import Construct
@@ -12,9 +12,15 @@ class CognitoTudelftStack(Stack):
 
         # User pool and user pool OAuth client
         base_name = "CogTUD"
-        cognito.UserPool(
+        cognito_user_pool = cognito.UserPool(
             self,
             f'{base_name}UserPool',
             removal_policy=RemovalPolicy.DESTROY,
             self_sign_up_enabled=False
+        )
+        # Output Cognito user pool id for future reference
+        CfnOutput(
+            self,
+            f'{base_name}UserPoolID',
+            value=cognito_user_pool.user_pool_id
         )
