@@ -1,5 +1,5 @@
 from aws_cdk import (
-    Stack, RemovalPolicy, CfnOutput,
+    Stack,
     aws_cognito as cognito,
     custom_resources as cr,
 )
@@ -8,28 +8,14 @@ from constructs import Construct
 
 class CognitoTudelftStack(Stack):
 
-    def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
+    def __init__(
+        self, scope: Construct, construct_id: str,
+        base_name: str, domain_name: str, cognito_user_pool: cognito.UserPool,
+        **kwargs
+    ) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        # TODO these variables will become input parameters
-        base_name = "CogTUD"
-        domain_name = "my-service.my-domain.nl"
-        domain_prefix = "my-service-secure"
-
-        # User pool and user pool OAuth client
-        cognito_user_pool = cognito.UserPool(
-            self,
-            f'{base_name}UserPool',
-            removal_policy=RemovalPolicy.DESTROY,
-            self_sign_up_enabled=False
-        )
-
-        # Output Cognito user pool id for future reference
-        CfnOutput(
-            self,
-            f'{base_name}UserPoolID',
-            value=cognito_user_pool.user_pool_id
-        )
+        domain_prefix = domain_name.split(".")[0] + "-secure"
 
         tudelft_identity_provider = cognito.UserPoolIdentityProviderSaml(
             self, "TUDelftIdentityProvider",
@@ -44,7 +30,7 @@ class CognitoTudelftStack(Stack):
                 ),
             ),
             idp_signout=False,
-            name="TU-Delft"
+            name=f'{base_name}'
         )
 
         cognito_app_client = cognito.UserPoolClient(
