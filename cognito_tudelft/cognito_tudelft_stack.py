@@ -1,5 +1,5 @@
 from aws_cdk import (
-    Stack,
+    Stack, RemovalPolicy,
     aws_cognito as cognito,
     custom_resources as cr,
 )
@@ -8,14 +8,29 @@ from constructs import Construct
 
 class CognitoTudelftStack(Stack):
 
+    # def __init__(
+    #     self, scope: Construct, construct_id: str,
+    #     base_name: str, domain_name: str,
+    #     cognito_user_pool: cognito.UserPool,
+    #     **kwargs
+    # ) -> None:
+    #     super().__init__(scope, construct_id, **kwargs)
     def __init__(
         self, scope: Construct, construct_id: str,
-        base_name: str, domain_name: str, cognito_user_pool: cognito.UserPool,
         **kwargs
     ) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
+        base_name = "TU-Delft"
+        domain_name = "my-service.my-domain.nl"
         domain_prefix = domain_name.split(".")[0] + "-secure"
+
+        cognito_user_pool = cognito.UserPool(
+            self,
+            f'{base_name}UserPool',
+            removal_policy=RemovalPolicy.DESTROY,
+            self_sign_up_enabled=False
+        )
 
         tudelft_identity_provider = cognito.UserPoolIdentityProviderSaml(
             self, "TUDelftIdentityProvider",
