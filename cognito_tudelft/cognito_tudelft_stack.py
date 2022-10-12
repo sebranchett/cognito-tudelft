@@ -9,13 +9,6 @@ from cognito_tudelft.TUDelftIdP import configure_user_pool
 
 class CognitoTudelftStack(Stack):
 
-    # def __init__(
-    #     self, scope: Construct, construct_id: str,
-    #     base_name: str, domain_name: str,
-    #     cognito_user_pool: cognito.UserPool,
-    #     **kwargs
-    # ) -> None:
-    #     super().__init__(scope, construct_id, **kwargs)
     def __init__(
         self, scope: Construct, construct_id: str,
         **kwargs

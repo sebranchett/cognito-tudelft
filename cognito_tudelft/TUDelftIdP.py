@@ -54,7 +54,7 @@ def configure_user_pool(
         )
     )
 
-    describe_cognito_user_pool_client = cr.AwsCustomResource(
+    cr.AwsCustomResource(
         self,
         f'{base_name}UserPoolClientIDResource',
         policy=cr.AwsCustomResourcePolicy.from_sdk_calls(
@@ -69,11 +69,6 @@ def configure_user_pool(
             physical_resource_id=cr.PhysicalResourceId.of(
                 cognito_app_client.user_pool_client_id)
         )
-    )
-
-    # cognito_user_pool_client_secret = \
-    describe_cognito_user_pool_client.get_response_field(
-        'UserPoolClient.ClientSecret'
     )
 
     cognito.UserPoolDomain(
