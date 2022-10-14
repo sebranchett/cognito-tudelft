@@ -28,7 +28,7 @@ def configure_user_pool(
         name=f'{base_name}'
     )
 
-    cognito.UserPoolClient(
+    cognito_app_client = cognito.UserPoolClient(
         self,
         f'{base_name}UserPoolClient',
         user_pool=cognito_user_pool,
@@ -66,3 +66,4 @@ def configure_user_pool(
             )
         )
     )
+    return cognito_app_client

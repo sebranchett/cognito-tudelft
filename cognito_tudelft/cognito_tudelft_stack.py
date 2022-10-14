@@ -25,7 +25,7 @@ class CognitoTudelftStack(Stack):
             self_sign_up_enabled=False
         )
 
-        configure_user_pool(
+        cognito_app_client = configure_user_pool(
             self,
             base_name=base_name,
             domain_name=domain_name,
