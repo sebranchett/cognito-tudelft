@@ -1,6 +1,8 @@
+from os import path
 from aws_cdk import (
     aws_cognito as cognito,
     custom_resources as cr,
+    aws_lambda as lambda_,
 )
 
 
@@ -78,4 +80,18 @@ def configure_user_pool(
             domain_prefix=domain_prefix
         ),
         user_pool=cognito_user_pool
+    )
+
+    cognito_user_pool.add_trigger(
+        cognito.UserPoolOperation.PRE_TOKEN_GENERATION, lambda_.Function(
+            self, "TidyUsernameFn",
+            runtime=lambda_.Runtime.PYTHON_3_9,
+            handler="tidy_username_lambda.lambda_handler",
+            code=lambda_.Code.from_asset(
+                path.join(
+                    path.dirname(path.abspath(__file__)),
+                    "tidy_username_lambda"
+                )
+            )
+        )
     )
