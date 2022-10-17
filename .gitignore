@@ -6,6 +6,7 @@ __pycache__
 *.egg-info
 .vscode/
 temp*
+dist/
 
 # CDK asset staging directory
 .cdk.staging
