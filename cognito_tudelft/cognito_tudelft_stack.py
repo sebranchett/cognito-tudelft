@@ -4,7 +4,7 @@ from aws_cdk import (
 )
 from constructs import Construct
 
-from cognito_tudelft.TUDelftIdP import configure_user_pool
+from cognito_tudelft.tudelft_idp import configure_user_pool
 
 
 class CognitoTudelftStack(Stack):
