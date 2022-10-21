@@ -1,14 +1,12 @@
-from os import path
 from aws_cdk import (
     aws_cognito as cognito,
-    aws_lambda as lambda_,
 )
 
 
 def configure_user_pool(
     self,
     base_name: str,
-    domain_name: str,
+    application_domain_name: str,
     cognito_user_pool: cognito.UserPool
 ):
 
@@ -42,7 +40,7 @@ def configure_user_pool(
         prevent_user_existence_errors=True,
         o_auth=cognito.OAuthSettings(
             callback_urls=[
-                'https://' + domain_name +
+                'https://' + application_domain_name +
                 '/hub/oauth_callback'
             ],
             flows=cognito.OAuthFlows(
@@ -53,17 +51,13 @@ def configure_user_pool(
         )
     )
 
-    cognito_user_pool.add_trigger(
-        cognito.UserPoolOperation.PRE_TOKEN_GENERATION, lambda_.Function(
-            self, "TidyUsernameFn",
-            runtime=lambda_.Runtime.PYTHON_3_9,
-            handler="tidy_username_lambda.lambda_handler",
-            code=lambda_.Code.from_asset(
-                path.join(
-                    path.dirname(path.abspath(__file__)),
-                    "tidy_username_lambda"
-                )
-            )
-        )
+    cognito.UserPoolDomain(
+        self,
+        f'{base_name}UserPoolDomain',
+        cognito_domain=cognito.CognitoDomainOptions(
+            domain_prefix=application_domain_name.split(".")[0]
+        ),
+        user_pool=cognito_user_pool
     )
+
     return cognito_app_client

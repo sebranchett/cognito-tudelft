@@ -18,20 +18,25 @@ class CognitoTudelftStack(Stack):
         super().__init__(scope, construct_id, **kwargs)
 
         base_name = "TU-Delft"
-        domain_name = "my-service.my-domain.nl"
+        application_domain_name = "my-service.my-domain.nl"
 
-        cognito_user_pool = cognito.UserPool(
+        new_cognito_user_pool = cognito.UserPool(
             self,
             f'{base_name}UserPool',
             removal_policy=RemovalPolicy.DESTROY,
             self_sign_up_enabled=False
         )
 
+        # There are differences between class UserPool and IUserPool
+        cognito_user_pool = cognito.UserPool.from_user_pool_id(
+            self, "UserPoolID", new_cognito_user_pool.user_pool_id
+        )
+
         # cognito_app_client = \
         configure_user_pool(
             self,
             base_name=base_name,
-            domain_name=domain_name,
+            application_domain_name=application_domain_name,
             cognito_user_pool=cognito_user_pool
         )
 
