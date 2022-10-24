@@ -51,11 +51,12 @@ def configure_user_pool(
         )
     )
 
+    suffix = "-secure"
     cognito.UserPoolDomain(
         self,
         f'{base_name}UserPoolDomain',
         cognito_domain=cognito.CognitoDomainOptions(
-            domain_prefix=application_domain_name.split(".")[0]
+            domain_prefix=application_domain_name.split(".")[0] + suffix
         ),
         user_pool=cognito_user_pool
     )
