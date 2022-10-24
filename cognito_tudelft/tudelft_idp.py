@@ -51,6 +51,17 @@ def configure_user_pool(
         )
     )
 
+    # allowed_users_group = \
+    cognito.CfnUserPoolGroup(
+        self,
+        id=f'{base_name}AllowedUsersGroup',
+        user_pool_id=cognito_user_pool.user_pool_id,
+        group_name="AllowedUsers",
+        precedence=10
+    )
+    #     role_arn=""
+    # )
+
     suffix = "-secure"
     cognito.UserPoolDomain(
         self,
