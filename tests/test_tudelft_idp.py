@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from aws_cdk import App, Environment
-from aws_cdk.assertions import Template, Match
+from aws_cdk.assertions import Template, Match, Capture
 
 from app import CognitoTudelftStack
 
@@ -44,4 +44,35 @@ def test_identity_provider():
                 "eduPersonPrincipalName"
             )
         }}
+    )
+
+
+def test_user_pool_client():
+    template.has_resource_properties(
+        "AWS::Cognito::UserPoolClient",
+        {"UserPoolId": {
+            "Ref": Match.string_like_regexp("TUDelftUserPool*")
+        }}
+    )
+
+    auth_flow_allowed = Capture()
+    template.has_resource_properties(
+        "AWS::Cognito::UserPoolClient",
+        {"AllowedOAuthFlowsUserPoolClient": auth_flow_allowed}
+    )
+    assert auth_flow_allowed.as_boolean() is True
+
+    template.has_resource_properties(
+        "AWS::Cognito::UserPoolClient",
+        {"CallbackURLs": [Match.string_like_regexp(
+            "https://my-service.my-domain.nl/hub/oauth_callback"
+        )]}
+    )
+
+    template.has_resource_properties(
+        "AWS::Cognito::UserPoolClient",
+        {"SupportedIdentityProviders": [
+            "COGNITO",
+            {"Ref": Match.string_like_regexp("TUDelftIdentityProvider*")}
+        ]}
     )
