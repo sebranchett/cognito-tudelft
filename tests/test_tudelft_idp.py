@@ -37,6 +37,7 @@ def test_identity_provider():
             "email": Match.string_like_regexp("mail")
         }}
     )
+
     template.has_resource_properties(
         "AWS::Cognito::UserPoolIdentityProvider",
         {"AttributeMapping": {
@@ -75,4 +76,18 @@ def test_user_pool_client():
             "COGNITO",
             {"Ref": Match.string_like_regexp("TUDelftIdentityProvider*")}
         ]}
+    )
+
+
+def test_user_pool_domain():
+    template.has_resource_properties(
+        "AWS::Cognito::UserPoolDomain",
+        {"Domain":  Match.string_like_regexp("my-service-secure")}
+    )
+
+    template.has_resource_properties(
+        "AWS::Cognito::UserPoolDomain",
+        {"UserPoolId": {
+            "Ref": Match.string_like_regexp("TUDelftUserPool*")
+        }}
     )
