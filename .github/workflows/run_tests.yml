@@ -33,6 +33,9 @@ jobs:
         shell: bash
         run: |
           python3 -m pip install -r requirements.txt
+          export PATH_TO_PYTEST="$(python -m pip show pytest |
+              grep Location | sed 's/Location: //')"
+          export PATH="$PATH_TO_PYTEST:$PATH"
 
       - name: Run tests
         shell: bash
