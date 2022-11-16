@@ -49,7 +49,7 @@ class CognitoTudelftStack(Stack):
                 ),
             ),
             idp_signout=False,
-            name=f'{base_name}'
+            name="TU-Delft"
         )
 
         cognito_app_client = cognito.UserPoolClient(
