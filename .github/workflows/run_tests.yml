@@ -33,11 +33,17 @@ jobs:
         shell: bash
         run: |
           python3 -m pip install -r requirements.txt
+          if [ "$RUNNER_OS" == "macOS" ]; then
+            echo PATH_TO_PYTEST="$(python -m pip show pytest |
+              grep Location | sed 's/Location: //')" >> $GITHUB_ENV
+            echo "Add to PATH: $(python -m pip show pytest |
+              grep Location | sed 's/Location: //')"
+          fi
 
       - name: Run tests
         shell: bash
         run: |
           if [ "$RUNNER_OS" == "macOS" ]; then
-            export PATH="/Library/Frameworks/Python.framework/Versions/3.11/bin:$PATH"
+            export PATH="${{ env.PATH_TO_PYTEST }}:$PATH"
           fi
           pytest
