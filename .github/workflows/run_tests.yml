@@ -34,9 +34,9 @@ jobs:
         run: |
           python3 -m pip install -r requirements.txt
           if [ "$RUNNER_OS" == "macOS" ]; then
-            echo PATH_TO_PYTEST="$(python -m pip show pytest |
+            echo PATH_TO_PYTEST="$(python3 -m pip show pytest |
               grep Location | sed 's/Location: //')" >> $GITHUB_ENV
-            echo "Add to PATH: $(python -m pip show pytest |
+            echo "Add to PATH: $(python3 -m pip show pytest |
               grep Location | sed 's/Location: //')"
           fi
 
