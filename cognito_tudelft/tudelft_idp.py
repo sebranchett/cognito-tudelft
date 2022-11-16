@@ -6,12 +6,30 @@ from constructs import Construct
 
 
 class CognitoTudelftStack(Stack):
+    """
+    Add TU Delft as identity provider to Cognito user pool
+
+    Adds:
+    - UserPoolIdentityProvider
+    - TU Delft IdP to a UserPoolClient
+    - UserPoolDomain
+    - (optionally) UserPoolGroup, if a non-empty user group name is passed
+    ...
+
+    Attributes
+    ----------
+    app_client : UserPoolClient
+        the app client with TU Delft as Identity Provider
+    user_group : CfnUserPoolGroup
+        if a user_group name is specified, returns a CfnUserPoolGroup
+    """
 
     def __init__(
         self, scope: Construct, construct_id: str,
         base_name: str,
         application_domain_name: str,
         cognito_user_pool: cognito.UserPool,
+        user_group: str = "",
         **kwargs
     ) -> None:
         super().__init__(scope, construct_id, **kwargs)
@@ -57,16 +75,16 @@ class CognitoTudelftStack(Stack):
             )
         )
 
-        # allowed_users_group = \
-        cognito.CfnUserPoolGroup(
-            self,
-            id=f'{base_name}AllowedUsersGroup',
-            user_pool_id=cognito_user_pool.user_pool_id,
-            group_name="AllowedUsers",
-            precedence=10
-        )
-        #     role_arn=""
-        # )
+        if user_group == "":
+            user_pool_group = None
+        else:
+            user_pool_group = cognito.CfnUserPoolGroup(
+                self,
+                id=f'{base_name}AllowedUsersGroup',
+                user_pool_id=cognito_user_pool.user_pool_id,
+                group_name=user_group,
+                precedence=10
+            )
 
         suffix = "-secure"
         cognito.UserPoolDomain(
@@ -79,3 +97,4 @@ class CognitoTudelftStack(Stack):
         )
 
         self.app_client = cognito_app_client
+        self.user_group = user_pool_group

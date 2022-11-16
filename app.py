@@ -31,6 +31,7 @@ CognitoTudelftStack(
     base_name=base_name,
     application_domain_name=application_domain_name,
     cognito_user_pool=helper_stack.user_pool,
+    user_group="AllowedUsers",
     env=default_env,
 )
 

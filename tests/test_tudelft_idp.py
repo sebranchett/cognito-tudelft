@@ -22,11 +22,22 @@ cognito_tudelft_stack = CognitoTudelftStack(
     base_name=base_name,
     application_domain_name=application_domain_name,
     cognito_user_pool=helper_stack.user_pool,
+    user_group="AllowedUsers",
+    env=env,
+)
+
+groupless_cognito_tudelft_stack = CognitoTudelftStack(
+    app,
+    "GrouplessCognitoTudelftStack",
+    base_name=base_name,
+    application_domain_name=application_domain_name,
+    cognito_user_pool=helper_stack.user_pool,
     env=env,
 )
 
 # Prepare the stack for assertions.
 template = Template.from_stack(cognito_tudelft_stack)
+groupless_template = Template.from_stack(groupless_cognito_tudelft_stack)
 
 
 def test_synthesizes_properly():
@@ -103,4 +114,10 @@ def test_user_pool_domain():
         {"UserPoolId": {
             "Fn::ImportValue": Match.string_like_regexp("HelperStack:*")
         }}
+    )
+
+
+def test_groupless_user_pool():
+    groupless_template.resource_count_is(
+        type="AWS::Cognito::UserPoolGroup", count=0
     )
