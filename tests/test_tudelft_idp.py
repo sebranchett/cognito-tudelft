@@ -2,14 +2,27 @@
 from aws_cdk import App, Environment
 from aws_cdk.assertions import Template, Match, Capture
 
-from app import CognitoTudelftStack
+from cognito_tudelft.helper_stack import HelperStack
+from cognito_tudelft.tudelft_idp import CognitoTudelftStack
 
 app = App()
+env = Environment(account="123456789012", region="eu-central-1")
+base_name = "TU-Delft"
+application_domain_name = "my-service.my-domain.nl"
+
+helper_stack = HelperStack(
+    app, "HelperStack",
+    base_name=base_name,
+    env=env,
+)
+
 cognito_tudelft_stack = CognitoTudelftStack(
-    app, "CognitoTudelftStack",
-    env=Environment(
-        account="123456789012", region="eu-central-1"
-    )
+    app,
+    "CognitoTudelftStack",
+    base_name=base_name,
+    application_domain_name=application_domain_name,
+    cognito_user_pool=helper_stack.user_pool,
+    env=env,
 )
 
 # Prepare the stack for assertions.
@@ -17,11 +30,11 @@ template = Template.from_stack(cognito_tudelft_stack)
 
 
 def test_synthesizes_properly():
-    template.resource_count_is(type="AWS::Cognito::UserPool", count=1)
     template.resource_count_is(
         type="AWS::Cognito::UserPoolIdentityProvider", count=1
     )
     template.resource_count_is(type="AWS::Cognito::UserPoolClient", count=1)
+    template.resource_count_is(type="AWS::Cognito::UserPoolGroup", count=1)
     template.resource_count_is(type="AWS::Cognito::UserPoolDomain", count=1)
 
 
@@ -52,7 +65,7 @@ def test_user_pool_client():
     template.has_resource_properties(
         "AWS::Cognito::UserPoolClient",
         {"UserPoolId": {
-            "Ref": Match.string_like_regexp("TUDelftUserPool*")
+            "Fn::ImportValue": Match.string_like_regexp("HelperStack:*")
         }}
     )
 
@@ -88,6 +101,6 @@ def test_user_pool_domain():
     template.has_resource_properties(
         "AWS::Cognito::UserPoolDomain",
         {"UserPoolId": {
-            "Ref": Match.string_like_regexp("TUDelftUserPool*")
+            "Fn::ImportValue": Match.string_like_regexp("HelperStack:*")
         }}
     )
