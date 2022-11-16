@@ -31,8 +31,10 @@ jobs:
 
       - name: Install Requirements
         shell: bash
-        run: 'pip3 install -r requirements.txt'
+        run: |
+          pip3 install -r requirements.txt
+          which pytest
 
       - name: Run tests
         shell: bash
-        run: 'pytest'
+        run: pytest
