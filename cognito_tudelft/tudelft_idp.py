@@ -22,6 +22,8 @@ class CognitoTudelftStack(Stack):
         the app client with TU Delft as Identity Provider
     user_group : CfnUserPoolGroup
         if a user_group name is specified, returns a CfnUserPoolGroup
+    user_pool_domain : UserPoolDomain
+        the domain associated with the user pool
     """
 
     def __init__(
@@ -87,7 +89,7 @@ class CognitoTudelftStack(Stack):
             )
 
         suffix = "-secure"
-        cognito.UserPoolDomain(
+        cognito_user_pool_domain = cognito.UserPoolDomain(
             self,
             f'{base_name}UserPoolDomain',
             cognito_domain=cognito.CognitoDomainOptions(
@@ -98,3 +100,4 @@ class CognitoTudelftStack(Stack):
 
         self.app_client = cognito_app_client
         self.user_group = user_pool_group
+        self.user_pool_domain = cognito_user_pool_domain
