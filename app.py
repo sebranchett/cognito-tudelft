@@ -30,7 +30,7 @@ CognitoTudelftStack(
     "CognitoTudelftStack",
     base_name=base_name,
     application_domain_name=application_domain_name,
-    cognito_user_pool=helper_stack.user_pool,
+    cognito_user_pool_id=helper_stack.user_pool_id,
     user_group="AllowedUsers",
     env=default_env,
 )

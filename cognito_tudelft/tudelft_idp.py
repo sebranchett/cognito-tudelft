@@ -20,21 +20,25 @@ class CognitoTudelftStack(Stack):
     ----------
     app_client : UserPoolClient
         the app client with TU Delft as Identity Provider
-    user_group : CfnUserPoolGroup
-        if a user_group name is specified, returns a CfnUserPoolGroup
     user_pool_domain : UserPoolDomain
         the domain associated with the user pool
+    user_group : CfnUserPoolGroup
+        if a user_group name is specified, returns a CfnUserPoolGroup
     """
 
     def __init__(
         self, scope: Construct, construct_id: str,
         base_name: str,
         application_domain_name: str,
-        cognito_user_pool: cognito.UserPool,
+        cognito_user_pool_id: str,
         user_group: str = "",
         **kwargs
     ) -> None:
         super().__init__(scope, construct_id, **kwargs)
+
+        cognito_user_pool = cognito.UserPool.from_user_pool_id(
+            self, "UserPoolID", cognito_user_pool_id
+        )
 
         tudelft_identity_provider = cognito.UserPoolIdentityProviderSaml(
             self, "TUDelftIdentityProvider",

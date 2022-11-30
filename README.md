@@ -45,7 +45,7 @@ cognito_tudelft_stack = CognitoTudelftStack(
     "CognitoTudelftStack",
     base_name=base_name,
     application_domain_name=domain_name,
-    cognito_user_pool=cognito_user_pool,
+    cognito_user_pool_id=cognito_user_pool_id,
     user_group=optional_user_group_name,
     env=Environment(
         account=self.account,
@@ -54,7 +54,7 @@ cognito_tudelft_stack = CognitoTudelftStack(
 )
 ...
 ```
-You need to provide suitable values for `base_name`, `domain_name`, `cognito_user_pool` and optionally `optional_user_group_name`.
+You need to provide suitable values for `base_name`, `domain_name`, `cognito_user_pool_id` and optionally `optional_user_group_name`.
 
 This will take a pre-existing Cognito User pool and add:
 * the TU Delft SAML identity provider

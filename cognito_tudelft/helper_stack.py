@@ -33,8 +33,4 @@ class HelperStack(Stack):
             self_sign_up_enabled=False
         )
 
-        cognito_user_pool = cognito.UserPool.from_user_pool_id(
-            self, "UserPoolID", new_cognito_user_pool.user_pool_id
-        )
-
-        self.user_pool = cognito_user_pool
+        self.user_pool_id = new_cognito_user_pool.user_pool_id
