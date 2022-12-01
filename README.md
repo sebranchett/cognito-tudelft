@@ -71,3 +71,12 @@ Clone this repository and move into it. Use the requirements file to create a vi
 pytest
 ```
 There should be no errors.
+
+## Warning
+Cognito will now authenticate all users who can log in with a valid NetId. If you only want a specific group of people to access your application, then you need to implement authorization. You can do this directly in your app directly, or by using Cognito groups with suitable permissions.
+
+## Useful AWS links
+* [Getting started with AWS Cognito User Pools](https://docs.aws.amazon.com/cognito/latest/developerguide/getting-started-with-cognito-user-pools.html)
+* [Using Tokens with User Pools](https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-with-identity-providers.html)
+* [AWS CDK Python Reference](https://docs.aws.amazon.com/cdk/api/v2/python/index.html#aws-cdk-python-reference)
+* [AWS example of serverless backend with Cognito](https://github.com/aws-samples/aws-cdk-examples/tree/master/python/serverless-backend/)

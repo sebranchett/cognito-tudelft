@@ -9,9 +9,6 @@ from constructs import Construct
 class HelperStack(Stack):
     """
     Helper stack class for creating a Cognito user pool
-
-    There are differences between class UserPool and IUserPool.
-    This class creates a UserPool and looks up its IUserPool.
     ...
 
     Attributes

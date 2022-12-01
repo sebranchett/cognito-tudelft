@@ -17,8 +17,7 @@ app = cdk.App()
 base_name = "TU-Delft"
 application_domain_name = "my-service.my-domain.nl"
 
-# There are differences between class UserPool and IUserPool
-# The helper stack creates an empty UserPool and finds its IUserPool
+# The helper stack creates an empty UserPool
 helper_stack = HelperStack(
     app, "HelperStack",
     base_name=base_name,
