@@ -91,7 +91,7 @@ aws cloudformation delete-stack --stack-name test-user-pool
 ```
 
 ## Warning
-Cognito will now authenticate all users who can log in with a valid NetId. If you only want a specific group of people to access your application, then you need to implement authorization. You can do this directly in your app directly, or by using Cognito groups with suitable permissions.
+Cognito will now authenticate all users who can log in with a valid NetId. If you only want a specific group of people to access your application, then you need to implement authorization. You can do this directly in your app, or by using Cognito groups with suitable permissions.
 
 ## Useful AWS links
 * [Getting started with AWS Cognito User Pools](https://docs.aws.amazon.com/cognito/latest/developerguide/getting-started-with-cognito-user-pools.html)
