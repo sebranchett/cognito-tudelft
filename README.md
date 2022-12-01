@@ -34,7 +34,7 @@ Be sure to include the following information:
 ## How to include this repository in your own CDK Python code
 Add this to your requirements file and build your (virtual) environment:
 ```
-git+https://github.com/sebranchett/cognito-tudelft.git@main
+git+https://github.com/sebranchett/cognito-tudelft.git@v0.1
 ```
 You can then add this to your Python code:
 ```
