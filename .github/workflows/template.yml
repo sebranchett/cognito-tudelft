@@ -1,0 +1,46 @@
+# Save a dummy CloudFormation template for each new release
+
+name: Save dummy CloudFormation template
+
+on:
+  # When it works, uncomment these 2 lines:
+  # release:
+  #   types: [published]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+  push:
+    branches: [ "template" ]
+
+env:
+  CDK_DEFAULT_ACCOUNT: "123456789012"
+  CDK_DEFAULT_REGION: "eu-central-1"
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: install npm
+      uses: actions/setup-node@v3
+
+    - name: Install AWS CDK
+      run: 'npm install -g aws-cdk'
+
+    - name: Install Requirements
+      run: 'pip3 install -r requirements.txt'
+
+    - name: Run CDK synth
+      run: 'cdk synth'
+
+    - name: Save CloudFormation template
+      uses: actions/upload-artifact@v3
+      with:
+        name: dummyCognitoTudelftStack.template.json
+        path: ./cdk.out/CognitoTudelftStack.template.json
+
