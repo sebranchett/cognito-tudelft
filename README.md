@@ -72,6 +72,24 @@ pytest
 ```
 There should be no errors.
 
+## Alternative without Python CDK
+If you do not want to work with the Python Cloud Development Kit (CDK), it is possible to work with CloudFormation templates directly. [Here is the AWS CloudFormation CLI documentation.](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/cloudformation/index.html#cli-aws-cloudformation)
+
+Locate the CloudFormation templates [here](./actions/workflows/template.yml). Click on the most recent successful run and download the 2 assets.
+You can create a Cognito user pool with this command:
+```
+aws cloudformation deploy --template-file HelperStack.template.json --stack-name test_user_pool
+```
+Edit the Dummy stack file, modifying every field that starts with `my-`. You can then add the TU Delft as IdP by running:
+```
+aws cloudformation deploy --template-file Dummy.CognitoTudelftStack.template.json --stack-name test-IdP
+```
+You can delete these 2 stacks as follows:
+```
+aws cloudformation delete-stack --stack-name test-IdP
+aws cloudformation delete-stack --stack-name test-user-pool
+```
+
 ## Warning
 Cognito will now authenticate all users who can log in with a valid NetId. If you only want a specific group of people to access your application, then you need to implement authorization. You can do this directly in your app directly, or by using Cognito groups with suitable permissions.
 

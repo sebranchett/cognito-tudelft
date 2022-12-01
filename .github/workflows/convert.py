@@ -9,7 +9,7 @@ with open('./cdk.out/CognitoTudelftStack.template.json') as f:
 for resource in data["Resources"]:
     if "UserPoolId" in data["Resources"][resource]["Properties"]:
         data["Resources"][resource]["Properties"]["UserPoolId"] = \
-            "<my_user_pool_id_here>"
+            "my-user-pool-id"
         print(data["Resources"][resource]["Properties"]["UserPoolId"])
 
 with open('./cdk.out/Dummy.CognitoTudelftStack.template.json', 'w') as f:
