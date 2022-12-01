@@ -75,7 +75,7 @@ There should be no errors.
 ## Alternative without Python CDK
 If you do not want to work with the Python Cloud Development Kit (CDK), it is possible to work with CloudFormation templates directly. [Here is the AWS CloudFormation CLI documentation.](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/cloudformation/index.html#cli-aws-cloudformation)
 
-Locate the CloudFormation templates [here](./actions/workflows/template.yml). Click on the most recent successful run and download the 2 assets.
+Locate the CloudFormation templates in this GitHub repository, under Actions -> Save dummy CloudFormation template. Click on the most recent successful run and download and unzip the 2 Artifacts.
 You can create a Cognito user pool with this command:
 ```
 aws cloudformation deploy --template-file HelperStack.template.json --stack-name test_user_pool

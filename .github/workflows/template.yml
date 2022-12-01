@@ -3,15 +3,12 @@
 name: Save dummy CloudFormation template
 
 on:
-  # When it works, uncomment these 2 lines:
-  # release:
-  #   types: [published]
+  # Make a new set of templates for every release
+  release:
+    types: [published]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-
-  push:
-    branches: [ "template" ]
 
 env:
   CDK_DEFAULT_ACCOUNT: "123456789012"
@@ -44,7 +41,7 @@ jobs:
     - name: Save User Pool CloudFormation template
       uses: actions/upload-artifact@v3
       with:
-        name: CognitoUserPoolTudelftStack.template.json
+        name: CognitoUserPoolStack.template.json
         path: ./cdk.out/HelperStack.template.json
 
     - name: Save IdP CloudFormation template
