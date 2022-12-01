@@ -38,9 +38,12 @@ jobs:
     - name: Run CDK synth
       run: 'cdk synth'
 
+    - name: Convert json
+      run: 'python3 .github/workflows/convert.py'
+
     - name: Save CloudFormation template
       uses: actions/upload-artifact@v3
       with:
         name: dummyCognitoTudelftStack.template.json
-        path: ./cdk.out/CognitoTudelftStack.template.json
+        path: ./cdk.out/Dummy.CognitoTudelftStack.template.json
 
