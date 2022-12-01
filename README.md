@@ -63,7 +63,7 @@ This will take a pre-existing Cognito User pool and add:
 * optionally a user group, which you can later configure, for example to empower allowed users.
 
 
-A helper stack is included in this repository. This helper stack creates a Cognito User pool and then looks up its `IUserPool`.
+A helper stack is included in this repository. This helper stack creates an empty Cognito User pool.
 
 ## Testing
 Clone this repository and move into it. Use the requirements file to create a virtual environment. Activate the virtual environment. Make sure you are at the root of this repository and type:
